@@ -431,7 +431,7 @@ This shows three transactions across two chains: the send you made, the receive 
 ```json
 {
   "address": "0x58A57ed9d8d624cBD12e2C467D34787555bB1b25",
-  "balance": "10000000000000000000",
+  "balance": "5000000000000000000",
   "symbol": "DEMO"
 }
 ```
