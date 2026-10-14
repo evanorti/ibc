@@ -124,7 +124,7 @@ Passing `--populate-config` adds each key to the config as a named signer. Later
 <!-- docci name="import the deployer key" -->
 
 ```bash
-./bin/ibc keys import ecdsa deployer --private-key 0x33fa40f84e854b941c2b0436dd4a256e1df1cb41b9c1c0ccc8446408c19b8bf9 --populate-config
+./bin/ibc keys add ecdsa deployer --private-key 0x33fa40f84e854b941c2b0436dd4a256e1df1cb41b9c1c0ccc8446408c19b8bf9 --populate-config
 ```
 
 <!-- docci expect-output -->
