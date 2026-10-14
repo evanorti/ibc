@@ -197,15 +197,22 @@ _init_chain() {
   # Besu wants the raw 32-byte hex with no 0x prefix.
   printf '%s\n' "$pk" > "$out_dir/key"
 
-  # The validator signing key stays owner-only: anything that can read it can
-  # sign blocks as this chain's sole validator. The Besu image runs as root
-  # (`docker inspect --format '{{.Config.User}}'`), so it reads 0600 through the
-  # bind mount regardless of the host uid that owns the file.
+  # The Besu image is configured to run as root, but besu-entry.sh only stays
+  # root long enough to chown the paths Besu reports from
+  # `--print-paths-and-exit`, then `su`s to besu (uid 1000). A key handed over
+  # by path is not one of those paths, so an owner-only key is unreadable to
+  # the process that needs it and Besu crash-loops with "Supplied file does not
+  # contain valid keyPair pair". On macOS this goes unnoticed, because Docker
+  # Desktop does not enforce the host uid through its file sharing.
+  #
+  # The key is derived from the public demo mnemonic at the top of
+  # docker-compose.yml and is regenerated on every run, so it is not a secret
+  # and 0644 costs nothing.
   #
   # besu.toml and el-genesis.json hold no secrets and are set explicitly so a
   # restrictive host umask cannot render them unreadable to the container.
   chmod 755 "$out_dir"
-  chmod 600 "$out_dir/key"
+  chmod 644 "$out_dir/key"
   chmod 644 "$out_dir/besu.toml" "$out_dir/el-genesis.json"
 
   if command -v jq >/dev/null 2>&1; then
