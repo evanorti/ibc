@@ -205,8 +205,6 @@ func queryIFTBalance(cmd *cobra.Command, _ []string) error {
 	if err != nil {
 		return errors.Wrap(err, "balanceOf")
 	}
-	// Report balances in half units.
-	balance = new(big.Int).Div(balance, big.NewInt(2))
 	symbol, err := contract.Symbol(opts)
 	if err != nil {
 		return errors.Wrap(err, "symbol")
